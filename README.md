@@ -1,7 +1,8 @@
 # Movie Recommendation Microservices System
 
 ## Overview
-This project is a microservices-based movie recommendation system that consists of multiple independent services working together to provide a complete movie recommendation experience. The system is built using Spring Boot and follows microservices architecture principles.
+This project is a microservices-based movie recommendation system built using Node.js, following clean architecture and service separation. It includes multiple independent services that communicate via gRPC and Apache Kafka, while exposing APIs through a central API Gateway using REST and GraphQL.
+
 
 ## System Architecture
 
@@ -9,38 +10,35 @@ This project is a microservices-based movie recommendation system that consists 
 The system consists of the following microservices:
 
 1. **Movie Service**
-   - Manages movie-related operations
-   - Handles movie data storage and retrieval
-   - Provides movie information and details
+   - Manages movie creation and retrieval
+   - Stores data in MongoDB
+   - Publishes events to Kafka
 
 2. **User Service**
-   - Manages user-related operations
-   - Handles user authentication and authorization
-   - Stores user preferences and profiles
+   - Handles user registration and management
+   - Communicates via gRPC
 
 3. **Recommendation Service**
-   - Generates personalized movie recommendations
-   - Processes user preferences and viewing history
-   - Implements recommendation algorithms
+   - Listens to Kafka events
+   - Generates and serves movie recommendations based on user and movie data
 
 4. **API Gateway**
-   - Acts as a single entry point for all client requests
-   - Handles routing and load balancing
-   - Implements cross-cutting concerns like authentication
+   - Serves as the single entry point
+   - Exposes REST and GraphQL APIs
+   - Routes requests to gRPC-based services
 
 ### Technology Stack
-- **Backend Framework**: Spring Boot
+- **Backend Framework**: Node.js (Express, Apollo)
 - **Message Broker**: Apache Kafka
-- **Service Discovery**: (To be implemented)
-- **Container Orchestration**: Docker
-- **Database**: (To be configured per service)
+- **Communication**: gRPC, Kafka
+- **Container Orchestration**: Docker, Docker Compose
+- **Database**: MongoDB
 
 ## Prerequisites
-- Java JDK 17 or higher
+- Node.js v18+
 - Docker and Docker Compose
-- Maven
+- MongoDB 
 - Apache Kafka
-- (Additional dependencies as needed)
 
 ## Getting Started
 
@@ -52,51 +50,54 @@ cd [project-directory]
 
 ### 2. Build the Services
 ```bash
-# Build all services
-mvn clean install
+# Clone the Repository
+git clone https://github.com/your-username/movie-recommendation-system.git
+cd movie-recommendation-system
 
-# Build individual services
-cd movie-service
-mvn clean install
+# Install Dependencies
+cd movie-service && npm install
+cd ../user-service && npm install
+cd ../recommendation-service && npm install
+cd ../api-gateway && npm install
 ```
 
 ### 3. Run with Docker Compose
 ```bash
 # Start all services
-docker-compose up -d
+docker-compose up --build
 ```
 
 ### 4. Access the Services
-- API Gateway: http://localhost:8080
-- Movie Service: http://localhost:8081
-- User Service: http://localhost:8082
-- Recommendation Service: http://localhost:8083
+- API Gateway: http://localhost:3000
+- Movie Service: http://localhost:	50052
+- User Service: http://localhost:50051
+- Recommendation Service: http://localhost:50053
 
 ## Service Details
 
 ### Movie Service
-- Port: 8081
+- Port: 50052
 - Responsibilities:
   - Movie CRUD operations
   - Movie metadata management
   - Movie search functionality
 
 ### User Service
-- Port: 8082
+- Port: 50051
 - Responsibilities:
   - User registration and authentication
   - Profile management
   - User preferences storage
 
 ### Recommendation Service
-- Port: 8083
+- Port: 50053
 - Responsibilities:
   - Movie recommendation generation
   - User preference analysis
   - Recommendation algorithm implementation
 
 ### API Gateway
-- Port: 8080
+- Port: 3000
 - Responsibilities:
   - Request routing
   - Load balancing
@@ -124,11 +125,11 @@ docker-compose up -d
 ## Testing
 ```bash
 # Run tests for all services
-mvn test
+npm test
 
 # Run tests for specific service
 cd movie-service
-mvn test
+npm test
 ```
 
 ## Deployment
@@ -146,14 +147,12 @@ docker-compose down
 ## Monitoring and Logging
 - Application logs are available through Docker logs
 - Each service implements its own logging mechanism
-- (Additional monitoring tools to be implemented)
 
-## Security
-- JWT-based authentication
-- HTTPS encryption
-- Input validation
-- Rate limiting
-- (Additional security measures to be implemented)
+## Future Improvements
+- Add authentication service (JWT)
+- Implement service discovery (Consul or Kubernetes)
+- Add Prometheus/Grafana monitoring
+- Improve recommendation logic with ML
 
 ## Contributing
 1. Fork the repository
@@ -162,8 +161,3 @@ docker-compose down
 4. Push to the branch
 5. Create a Pull Request
 
-## License
-[Specify your license here]
-
-## Contact
-[Your contact information] 
