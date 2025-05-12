@@ -69,7 +69,7 @@ docker-compose up --build
 
 ### 4. Access the Services
 - API Gateway: http://localhost:3000
-- Movie Service: http://localhost:	50052
+- Movie Service: http://localhost:50052
 - User Service: http://localhost:50051
 - Recommendation Service: http://localhost:50053
 
